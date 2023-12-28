@@ -291,9 +291,11 @@ ul li.playing{
         </div>
         <i id="close" class="material-icons">close</i>
       </div>
-      <ul>
-        <!-- here li list are coming from js -->
-      </ul>
+     <ul>
+  <!-- here li list are coming from js -->
+  <!-- dynamically created li elements will be inserted here -->
+</ul>
+
     </div>
   </div>
   </main>
@@ -528,6 +530,21 @@ for (let i = 0; i < allMusic.length; i++) {
                 <audio class="${allMusic[i].src}" src="songs/${allMusic[i].src}.mp3"></audio>
               </li>`;
   ulTag.insertAdjacentHTML("beforeend", liTag); //inserting the li inside ul tag
+
+  let liAudioDurationTag = ulTag.querySelector(`#${allMusic[i].src}`);
+  let liAudioTag = ulTag.querySelector(`.${allMusic[i].src}`);
+  liAudioTag.addEventListener("loadeddata", ()=>{
+    let duration = liAudioTag.duration;
+    let totalMin = Math.floor(duration / 60);
+    let totalSec = Math.floor(duration % 60);
+    if(totalSec < 10){ //if sec is less than 10 then add 0 before it
+      totalSec = `0${totalSec}`;
+    };
+    liAudioDurationTag.innerText = `${totalMin}:${totalSec}`; //passing total duration of song
+    liAudioDurationTag.setAttribute("t-duration", `${totalMin}:${totalSec}`); //adding t-duration attribute with total duration value
+  });
+}
+
 
   let liAudioDurationTag = ulTag.querySelector(`#${allMusic[i].src}`);
   let liAudioTag = ulTag.querySelector(`.${allMusic[i].src}`);
